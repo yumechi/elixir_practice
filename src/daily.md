@@ -111,3 +111,67 @@ iex(3)> Enum.map_every(["やさい", "さかな", "くだもの", "おやつ", "
 
 
 引き続き読んでいこう…。
+
+
+### 2017/06/08
+昨日は体調が悪かったので連続コミットが途切れた…。
+
+5.Control Structures（制御構文）を読んだ。
+
+#### 5.Control Structuresを読んで
+- 制御構文には `if/unless`, `case`, `cond`, `with` がある
+- `if` 文でfalse判定になるのは、nilである場合とboolean値がfalseである場合である。
+- C言語等のように0がfalse判定されることはない
+
+```
+iex(1)> if 1 do
+...(1)>     IO.puts("1はtrue")
+...(1)> end
+1はtrue
+:ok
+iex(2)> if 0 do
+...(2)>     IO.puts("0もtrue")
+...(2)> end
+0もtrue
+:ok
+```
+
+- else文も書ける
+```
+iex(3)> if is_integer("矢澤にこ") do
+...(3)>    IO.puts("数字です")
+...(3)> else
+...(3)>    IO.puts("数字じゃないです")
+...(3)> end
+数字じゃないです
+```
+
+- unlessはif notみたいな感じ。
+
+- case文は複数のマッチングに使える。他言語のswitch文みたいなもの。
+- どの条件にも入らなかった場合は `_` を使って指定する
+- もしどの条件にも当てはまらないものを処理していないと、`CaseClauseError`が発生する
+
+```
+iex(4)> case {:ok, "Hello World", :key, "こんにちは"} do
+...(4)>    {:ok, result} -> result
+...(4)>    {:error} -> "Uh oh!"
+...(4)> end
+** (CaseClauseError) no case clause matching: {:ok, "Hello World", :key, "こんにちは"}
+    
+iex(4)> case {:ok, "Hello World", :key, "こんにちは"} do
+...(4)>    {:error} -> "Uh oh!"                         
+...(4)>    {:ok, result} -> result                      
+...(4)>    _ -> "うーん"
+...(4)> end
+"うーん"
+iex(5)> case {:ok, "Hello World", :key, "こんにちは"} do
+...(5)>    {:ok, result} -> result                      
+...(5)>    {:error} -> "Uh oh!"                         
+...(5)>    {:ok, result, :key, value} -> result <> " " <> value
+...(5)> end
+"Hello World こんにちは"
+```
+
+condとwithはまだよくわからない部分もあるので、続きはまた明日。
+withはswiftのif-letっぽいなあという解釈なんだけど、どうなんだろう。。。
