@@ -173,5 +173,40 @@ iex(5)> case {:ok, "Hello World", :key, "こんにちは"} do
 "Hello World こんにちは"
 ```
 
-condとwithはまだよくわからない部分もあるので、続きはまた明日。
-withはswiftのif-letっぽいなあという解釈なんだけど、どうなんだろう。。。
+2017/06/09（続き）
+
+- case 文読み終わったと思ったら、ピン演算子やリストと合わせる方法もあるそう（私は今のところ使い方が思いつかないが…）
+- condは`else if`や`elsif`のように使える。
+- 一番最初にマッチしたものが優先される
+- `else`に当たる部分は `true ->` で書く
+
+```
+iex(6)> cond do
+...(6)>     2 + 2 == 5 ->
+...(6)>         "多分違いますね"
+...(6)>     2 * 2 == 4 ->
+...(6)>         "アッてますね"
+...(6)>     1 - 1 == 0 ->
+...(6)>         "ココには来ないですね"
+...(6)> end
+```
+
+- `with` は取り出しで使えるらしい。if-letっぽい…？
+- ないものを指定するとerrorになる
+- errorになった場合はelseで処理を記述可能
+
+```
+iex(7)> love_live = %{yazawa: "にこ", tojo: "のぞみ"}
+%{tojo: "のぞみ", yazawa: "にこ"}
+iex(8)> with {:ok, first} <- Map.fetch(love_live, :yazawa),
+...(8)>      {:ok, last} <- Map.fetch(love_live, :tojo),
+...(8)>      do: last <> " & " <> first
+iex(9)> with {:ok, first} <- Map.fetch(love_live, :yazawa),
+...(9)>      {:ok, last} <- Map.fetch(love_live, :ayase),  
+...(9)>      do: last <> " & " <> first                    
+:error
+```
+
+厳格に型のチェックとかできそうな機構があって少し安心できるかも？
+
+あとdailyが重くなってきたのでwikiに移行することも考え始めよ…。
